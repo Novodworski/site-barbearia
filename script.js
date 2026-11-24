@@ -32,15 +32,26 @@ const save = () => {
   syncCloud();
 };
 
-async function loadCloud() {
-  const { data, error } = await sb.from("barbearia_state").select("data").eq("id", "main").single();
-  if (error || !data || !data.data) return;
-  const d = data.data;
-  if (Array.isArray(d.users)) { users = d.users; ST.set("users", users); }
-  if (Array.isArray(d.bk)) { bk = d.bk; ST.set("bk", bk); }
-  if (Array.isArray(d.bl)) { bl = d.bl; ST.set("bl", bl); }
-  if (d.conf && typeof d.conf === "object") { conf = d.conf; ST.set("conf", conf); }
-  render();
+async function loadCloud(retry = true) {
+  try {
+    const { data, error } = await sb.from("barbearia_state").select("data").eq("id", "main").single();
+    if (error || !data || !data.data) {
+      if (retry) {
+        setTimeout(() => loadCloud(false), 1200);
+      }
+      return;
+    }
+    const d = data.data;
+    if (Array.isArray(d.users)) { users = d.users; ST.set("users", users); }
+    if (Array.isArray(d.bk)) { bk = d.bk; ST.set("bk", bk); }
+    if (Array.isArray(d.bl)) { bl = d.bl; ST.set("bl", bl); }
+    if (d.conf && typeof d.conf === "object") { conf = d.conf; ST.set("conf", conf); }
+    render();
+  } catch (e) {
+    if (retry) {
+      setTimeout(() => loadCloud(false), 1200);
+    }
+  }
 }
 
 if (!ST.get("mig", false)) { bk.forEach(b => b.slot += 4); ST.set("mig", true); save(); } /* ajuste: agenda agora começa às 07:00 */
