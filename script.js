@@ -8,13 +8,38 @@ const N = (CFG.close - CFG.open) * 2, WD = ["dom","seg","ter","qua","qui","sex",
 const JP = CONFIG.jornadaPadrao; /* jornada padrão até o barbeiro configurar a dele (posições de 30 min desde a abertura) */
 const DEF = {d: Array.from({length: 7}, (_, i) => ({on: JP.dias.includes(i), s: (JP.abre - CFG.open) * 2, e: (JP.fecha - CFG.open) * 2}))};
 
-/* ===== Armazenamento (hoje: localStorage; trocar aqui por um banco online depois) ===== */
+/* ===== Armazenamento (localStorage + sincronização com Supabase) ===== */
+const SUPABASE_URL = "https://yqbpyhbmivwrhggfyisx.supabase.co";
+const SUPABASE_KEY = "sb_publishable_7MUH5NKYmzivMzzLzAw0MQ_563rjdWn";
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
 const ST = {
   get(k, d) { try { const v = JSON.parse(localStorage.getItem(k)); return v == null ? d : v; } catch (e) { return d; } },
   set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
 };
 let users = ST.get("users", []), bk = ST.get("bk", []), bl = ST.get("bl", []), mine = ST.get("mine", []), conf = ST.get("conf", {}), meId = ST.get("sess", null);
-const save = () => { ST.set("users", users); ST.set("bk", bk); ST.set("bl", bl); ST.set("mine", mine); ST.set("conf", conf); ST.set("sess", meId); };
+
+async function syncCloud() {
+  const payload = { users, bk, bl, conf };
+  const { error } = await sb.from("barbearia_state").upsert({ id: "main", data: payload, updated_at: new Date().toISOString() });
+  if (error) console.error("Erro ao sincronizar com o Supabase:", error);
+}
+
+const save = () => {
+  ST.set("users", users); ST.set("bk", bk); ST.set("bl", bl); ST.set("mine", mine); ST.set("conf", conf); ST.set("sess", meId);
+  syncCloud();
+};
+
+async function loadCloud() {
+  const { data, error } = await sb.from("barbearia_state").select("data").eq("id", "main").single();
+  if (error || !data || !data.data) return;
+  const d = data.data;
+  if (Array.isArray(d.users)) { users = d.users; ST.set("users", users); }
+  if (Array.isArray(d.bk)) { bk = d.bk; ST.set("bk", bk); }
+  if (Array.isArray(d.bl)) { bl = d.bl; ST.set("bl", bl); }
+  if (d.conf && typeof d.conf === "object") { conf = d.conf; ST.set("conf", conf); }
+  render();
+}
 
 if (!ST.get("mig", false)) { bk.forEach(b => b.slot += 4); ST.set("mig", true); save(); } /* ajuste: agenda agora começa às 07:00 */
 
@@ -334,3 +359,4 @@ function render() {
 tg.onclick = () => { view = view === "client" ? (me() ? "panel" : "login") : "client"; err = ""; done = null; draft = null; render(); };
 document.querySelectorAll("[data-taxa]").forEach(e => { e.textContent = rs(FEE); });
 render();
+loadCloud();
