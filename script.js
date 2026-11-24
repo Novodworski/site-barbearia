@@ -13,18 +13,7 @@ const SUPABASE_URL = "https://yqbpyhbmivwrhggfyisx.supabase.co";
 const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlxYnB5aGJtaXZ3cmhnZ2Z5aXN4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTU0Nzc4NDcsImV4cCI6MjExMTA1Mzg0N30.k0c4BXBde4Dr_PWdAY_4Eob4kgc6sXhVyy2fTLsZiJ0";
 const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-(async () => {
-  const box = document.createElement("pre");
-  box.style.cssText = "background:#3b1111;color:#ffd6d6;padding:12px;margin:12px;border-radius:8px;white-space:pre-wrap;font-size:12px;z-index:9999;position:relative;";
-  box.textContent = "Teste Supabase em execução...";
-  document.body.prepend(box);
-  try {
-    const res = await sb.from("barbearia_state").select("*").limit(1);
-    box.textContent = "Resposta Supabase:\n" + JSON.stringify(res, null, 2);
-  } catch (e) {
-    box.textContent = "Exceção no fetch:\n" + (e && e.stack ? e.stack : String(e));
-  }
-})();
+
 
 const ST = {
   get(k, d) { try { const v = JSON.parse(localStorage.getItem(k)); return v == null ? d : v; } catch (e) { return d; } },
@@ -45,15 +34,7 @@ const save = () => {
 
 async function loadCloud() {
   const { data, error } = await sb.from("barbearia_state").select("data").eq("id", "main").single();
-  if (!data || !data.data) return;
-
-  if (error) {
-  const box = document.createElement("pre");
-  box.style.cssText = "background:#3b1111;color:#ffd6d6;padding:12px;margin:12px;border-radius:8px;white-space:pre-wrap;font-size:12px;";
-  box.textContent = "Erro Supabase: " + JSON.stringify(error, null, 2);
-  document.body.prepend(box);
-  return;
-}
+  if (error || !data || !data.data) return;
   const d = data.data;
   if (Array.isArray(d.users)) { users = d.users; ST.set("users", users); }
   if (Array.isArray(d.bk)) { bk = d.bk; ST.set("bk", bk); }
