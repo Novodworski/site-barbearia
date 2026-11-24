@@ -32,13 +32,14 @@ const save = () => {
 
 async function loadCloud() {
   const { data, error } = await sb.from("barbearia_state").select("data").eq("id", "main").single();
-  if (error || !data || !data.data) return;
-  
+  if (!data || !data.data) return;
+
   if (error) {
   const box = document.createElement("pre");
   box.style.cssText = "background:#3b1111;color:#ffd6d6;padding:12px;margin:12px;border-radius:8px;white-space:pre-wrap;font-size:12px;";
   box.textContent = "Erro Supabase: " + JSON.stringify(error, null, 2);
   document.body.prepend(box);
+  return;
 }
   const d = data.data;
   if (Array.isArray(d.users)) { users = d.users; ST.set("users", users); }
