@@ -10,7 +10,7 @@ const DEF = {d: Array.from({length: 7}, (_, i) => ({on: JP.dias.includes(i), s: 
 
 /* ===== Armazenamento (localStorage + sincronização com Supabase) ===== */
 const SUPABASE_URL = "https://yqbpyhbmivwrhggfyisx.supabase.co";
-const SUPABASE_KEY = "sb_publishable_7MUH5NKYmzivMzzLzAw0MQ_563rjdWn";
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlxYnB5aGJtaXZ3cmhnZ2Z5aXN4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTU0Nzc4NDcsImV4cCI6MjExMTA1Mzg0N30.k0c4BXBde4Dr_PWdAY_4Eob4kgc6sXhVyy2fTLsZiJ0";
 const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 const ST = {
