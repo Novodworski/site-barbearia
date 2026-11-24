@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Texto que aparece na aba do navegador -->
+<title>Agendamento – Barbearia do Gaúcho</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+
+  <header>
+    <!-- NOME DA BARBEARIA (topo da página) -->
+     <div class="marca">
+      <img src="img/logo-g.png" alt="logo-g" class="logo">
+    <h1> Barbearia do Gaúcho</h1>
+     </div>
+    <button class="link" id="tg"></button>
+  </header>
+
+  <p class="sub" id="sub"></p>
+
+  <!-- AVISO DA TAXA (o valor vem de "taxaAgendamento" lá embaixo, não escreva o número aqui) -->
+  <div class="fee" id="fee">
+    <strong>Taxa de agendamento: <span data-taxa></span></strong>
+    <span>Cobrada em todo agendamento e somada ao valor dos serviços.</span>
+  </div>
+
+  <div id="app"></div>
+
+  <!-- RODAPÉ -->
+  <p class="foot">Demonstração: os dados ficam salvos apenas neste navegador.</p>
+
+</main>
+
+<!-- =====================================================================
+     CONFIGURAÇÃO: preços, taxa, horários e textos. Edite à vontade.
+     (Mantenha as aspas e as vírgulas no lugar.)
+     ===================================================================== -->
+<script>
+const CONFIG = {
+  taxaAgendamento: 10,      // taxa cobrada em todo agendamento (R$)
+  descontoCombo: 5,         // desconto do combo cabelo + barba + sobrancelha (R$)
+  maxBarbeiros: 6,          // quantas cadeiras / barbeiros podem se cadastrar
+  diasParaAgendar: 14,      // quantos dias abertos o cliente enxerga pra frente
+  horaAbre: 7,              // início da grade de horários (limite que o barbeiro pode escolher)
+  horaFecha: 22,            // fim da grade de horários
+  // Jornada que vale até o barbeiro configurar a dele. Dias: 0=dom 1=seg 2=ter 3=qua 4=qui 5=sex 6=sáb
+  jornadaPadrao: { abre: 9, fecha: 19, dias: [1, 2, 3, 4, 5, 6] },
+
+  // SERVIÇOS E PREÇOS
+  // corte: true  = é um tipo de corte de cabelo (só um por vez e conta para o combo)
+  // minutos      = tempo que o serviço ocupa na agenda (use 15 ou 30)
+  // Não mude os ids "bar" e "sob": o combo usa eles.
+  servicos: [
+    { id: "deg", nome: "Corte degradê", preco: 40, minutos: 30, corte: true },
+    { id: "soc", nome: "Corte social",  preco: 35, minutos: 30, corte: true },
+    { id: "maq", nome: "Máquina",       preco: 25, minutos: 30, corte: true },
+    { id: "bar", nome: "Barba",         preco: 35, minutos: 30 },
+    { id: "sob", nome: "Sobrancelha",   preco: 15, minutos: 15 },
+    { id: "pez", nome: "Pezinho",       preco: 20, minutos: 15 }
+  ]
+};
+
+// TEXTOS que o cliente vê. Trechos entre { } são preenchidos sozinhos: não apague.
+const TEXTOS = {
+  subtitulo: "Escolha os serviços, o barbeiro e o horário.",
+  subtituloPainel: "Área da barbearia",
+  btnAreaBarbearia: "Área da barbearia",
+  btnMeuPainel: "Meu painel",
+  btnVoltar: "Voltar ao agendamento",
+
+  passo1: "1 · Serviços (pode escolher mais de um)",
+  passo2: "2 · Barbeiro",
+  passo3: "3 · Dia",
+  passo4: "4 · Horário",
+  passo5: "5 · Seus dados",
+  dicaCombo: "Combo cabelo + barba + sobrancelha: desconto de {desconto}. Escolha um tipo de corte por vez.",
+  linhaDesconto: "Desconto combo (cabelo + barba + sobrancelha)",
+  linhaTaxa: "Taxa de agendamento",
+  linhaTotal: "Total",
+
+  semBarbeiros: "Nenhum barbeiro cadastrado ainda.",
+  semDias: "Esse barbeiro ainda não definiu os dias de trabalho.",
+  semHorarios: "Sem horários livres neste dia para essa duração. Escolha outro dia ou barbeiro.",
+
+  placeholderNome: "Seu nome (obrigatório)",
+  placeholderTelefone: "Telefone com DDD (obrigatório)",
+  btnConfirmar: "Confirmar agendamento",
+  erroNome: "O nome é obrigatório para agendar.",
+  erroTelefone: "O telefone com DDD é obrigatório para agendar.",
+  erroOcupado: "Esse horário acabou de ser ocupado. Escolha outro.",
+
+  confirmadoTitulo: "Agendamento confirmado ✓",
+  confirmadoMsg: "{nome}, seu horário com {barbeiro} está marcado para {data} às {hora}.",
+  confirmadoTotal: "Serviços: {servicos}. Total com a taxa de agendamento: {total}.",
+  btnOutro: "Fazer outro agendamento",
+  seuAgendamento: "Seu agendamento",
+  btnCancelar: "Cancelar"
+};
+</script>
+<script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,119 @@
+/* =====================================================================
+   CORES E ESTILO: edite só esta parte de cima.
+   Troque os códigos de cor (#rrggbb) e salve. Dica: pesquise "color picker"
+   no Google para escolher a cor e copiar o código.
+   ===================================================================== */
+
+   :root {
+  --fundo: #2b2d30;
+  --cartao: #1e1f22;
+  --texto: #f5f5f5;
+  --texto-suave: #a0a4ab;
+  --destaque: #ffffff;
+  --texto-sobre-destaque: #111111;
+  --borda: #3c3f44;
+  --sucesso: #4ade80;
+  --erro: #f87171;
+  --indisponivel: #26282b;
+  --aviso-fundo: #25272a;
+
+
+  /* ----- Fonte e arredondamento ----- */
+  --fonte: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --raio: 14px;                   /* cantos dos quadros */
+  --raio-pequeno: 10px;           /* cantos dos botões e campos */
+}
+
+/* =====================================================================
+   LAYOUT: daqui pra baixo não precisa mexer para trocar cores.
+   ===================================================================== */
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--fundo); color: var(--texto); font: 16px/1.45 var(--fonte); }
+main { max-width: 620px; margin: 0 auto; padding: 20px 16px 40px; }
+main.wide { max-width: 1200px; }
+header { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 8px; }
+h1 { font-size: 1.5rem; margin: 0; }
+.sub { color: var(--texto-suave); margin: 0 0 14px; }
+
+/* aviso da taxa */
+.fee { background: var(--aviso-fundo); border: 2px solid var(--destaque); border-radius: 12px; padding: 12px 14px; margin-bottom: 14px; }
+.fee strong { display: block; font-size: 1.05rem; }
+.fee > span { color: var(--texto-suave); font-size: .9rem; }
+
+/* quadros */
+section { background: var(--cartao); border: 1px solid var(--borda); border-radius: var(--raio); padding: 16px; margin-bottom: 14px; }
+h2 { font-size: .8rem; letter-spacing: .06em; text-transform: uppercase; color: var(--texto-suave); margin: 0 0 10px; }
+.row { display: flex; flex-wrap: wrap; gap: 8px; }
+button, input, select { font: inherit; color: inherit; }
+
+/* botões de escolha (serviços, dias, horários) */
+.chip { border: 1px solid var(--borda); background: var(--fundo); border-radius: var(--raio-pequeno); padding: 9px 13px; cursor: pointer; text-align: left; }
+.chip small { display: block; color: var(--texto-suave); font-size: .78rem; }
+.chip.sel { background: var(--destaque); border-color: var(--destaque); color: var(--texto-sobre-destaque); }
+.chip.sel small { color: var(--texto-sobre-destaque); opacity: .85; }
+.chip:disabled { background: var(--indisponivel); color: var(--texto-suave); text-decoration: line-through; cursor: not-allowed; opacity: .6; }
+.slots { display: grid; grid-template-columns: repeat(auto-fill, minmax(74px, 1fr)); gap: 8px; }
+.slots .chip { text-align: center; padding: 9px 4px; }
+
+/* resumo de preço */
+.tip { color: var(--texto-suave); font-size: .85rem; margin: 10px 0 0; }
+.sum { margin-top: 12px; border-top: 1px dashed var(--borda); padding-top: 8px; }
+.ln { display: flex; justify-content: space-between; gap: 10px; padding: 2px 0; }
+.ln.d { color: var(--sucesso); }
+.ln.f { font-weight: 600; }
+.ln.t { border-top: 1px solid var(--borda); margin-top: 6px; padding-top: 6px; font-size: 1.1rem; font-weight: 700; }
+
+/* campos e botões */
+input, select { padding: 11px 12px; border: 1px solid var(--borda); border-radius: var(--raio-pequeno); background: var(--fundo); }
+input { width: 100%; margin-bottom: 10px; }
+select { padding: 9px 10px; }
+.go { width: 100%; border: 0; background: var(--destaque); color: var(--texto-sobre-destaque); padding: 13px; border-radius: var(--raio-pequeno); font-weight: 600; cursor: pointer; }
+.go + .go { margin-top: 8px; }
+.link { background: none; border: 1px solid var(--borda); border-radius: var(--raio-pequeno); padding: 7px 12px; cursor: pointer; font-size: .85rem; }
+a.link { text-decoration: none; color: inherit; text-align: center; display: block; }
+.link.danger { border-color: var(--erro); color: var(--erro); font-weight: 600; }
+.msg { color: var(--texto-suave); margin: 0; }
+.err { color: var(--erro); margin: 0 0 10px; font-size: .9rem; }
+
+/* confirmação */
+.done { border-color: var(--sucesso); }
+.done h3 { margin: 0 0 6px; color: var(--sucesso); }
+
+/* agendamentos (cliente, barbeiro e admin) */
+.bk { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 10px 0; border-top: 1px solid var(--borda); }
+.bk:first-of-type { border-top: 0; }
+.bk div { min-width: 0; }
+.bk small { color: var(--texto-suave); display: block; }
+.ph { user-select: all; -webkit-user-select: all; color: var(--texto) !important; font-weight: 600; font-size: .95rem !important; }
+.act { display: flex; flex-direction: column; gap: 6px; }
+.cols { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(250px, 1fr); gap: 12px; overflow-x: auto; align-items: start; }
+.cols .col { margin: 0; }
+.col .tip { margin: 0 0 8px; }
+.col .bk { flex-wrap: wrap; }
+
+/* jornada e bloqueios */
+.tm { display: flex; align-items: center; gap: 8px; margin: 12px 0; }
+.dr { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; flex-wrap: wrap; }
+.foot { color: var(--texto-suave); font-size: .8rem; text-align: center; margin-top: 20px; }
+.marca { display: flex; align-items: center; gap: 10px; }
+.logo { height: 70px; width: auto; flex-shrink: 0; }
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+  background-color: #f5f5f5; /* fundo claro para destacar a logo */
+  color: #18181b;            /* texto escuro com bom contraste */
+  padding: 10px 14px;
+  border-radius: 14px;
+  margin-left: -10px;
+  margin-right: -10px;
+}
+
+header .link {
+  color: #18181b;
+  border-color: #d4d4d8;
+  background-color: #ffffff;
+}
